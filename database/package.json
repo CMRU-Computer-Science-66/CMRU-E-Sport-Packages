@@ -25,7 +25,7 @@
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"prisma:generate": "prisma generate",
-		"prepublish": "pnpm pkg delete scripts devDependencies publishConfig private && pnpm pkg set scripts.postinstall='prisma generate' && pnpm pkg set prisma.schema='client/schema.prisma'",
+		"prepublish": "pnpm pkg delete scripts devDependencies publishConfig private && pnpm pkg set scripts.postinstall='prisma generate --schema=client/schema.prisma' && pnpm pkg set prisma.schema='client/schema.prisma'",
 		"pull": "dotenv -e ../.env -- prisma db pull",
 		"push": "dotenv -e ../.env -- prisma db push"
 	},
