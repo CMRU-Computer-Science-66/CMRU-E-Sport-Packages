@@ -1,0 +1,15 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"compilerOptions": {
+		"rootDir": "./src",
+		"outDir": "./esm",
+		"declaration": true,
+		"declarationDir": "dist",
+		"allowJs": true,
+		"lib": ["DOM"],
+		"typeRoots": ["node_modules/@types"],
+	},
+	"display": "@cmru-comsci-66/e-sport-database",
+	"extends": "../.config/tsconfig.json",
+	"include": ["src"],
+}

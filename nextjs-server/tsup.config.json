@@ -1,0 +1,11 @@
+{
+	"bundle": true,
+	"clean": true,
+	"dts": true,
+	"emitDecoratorMetadata": true,
+	"entry": ["api/index.ts"],
+	"format": ["cjs", "esm"],
+	"minify": true,
+	"sourcemap": false,
+	"splitting": true
+}

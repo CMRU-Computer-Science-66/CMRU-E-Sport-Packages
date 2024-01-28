@@ -1,0 +1,48 @@
+{
+	"private": false,
+	"name": "@cmru-comsci-66/e-sport-database",
+	"version": "1.0.0",
+	"license": "apache-2.0",
+	"author": "Faelayis <48393914+Faelayis@users.noreply.github.com>",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/CMRU-Computer-Science-66/CMRU-E-Sport-Packages.git",
+		"directory": "database"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.mjs",
+	"files": [
+		"client",
+		"dist"
+	],
+	"scripts": {
+		"build:esm": "tsc -b ./tsconfig.json",
+		"build:types": "tsc -b ./tsconfig.types.json",
+		"clean": "del-cli client dist esm .turbo *.tsbuildinfo",
+		"dev": "dotenv -e ../.env -- prisma studio",
+		"generate": "dotenv -e ../.env -- prisma generate",
+		"postinstall": "pnpm run generate && tsup && pnpm run build:types",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
+		"prisma:generate": "prisma generate",
+		"prepublish": "pnpm pkg delete scripts devDependencies publishConfig private && pnpm pkg set scripts.postinstall='prisma generate' && pnpm pkg set prisma.schema='client/schema.prisma'",
+		"pull": "dotenv -e ../.env -- prisma db pull",
+		"push": "dotenv -e ../.env -- prisma db push"
+	},
+	"typings": "dist/index.d.ts",
+	"dependencies": {
+		"@prisma/client": "5.8.1",
+		"prisma": "5.8.1"
+	},
+	"devDependencies": {
+		"@types/node": "20.11.9",
+		"typescript": "5.3.3"
+	},
+	"publishConfig": {
+		"access": "public",
+		"linkDirectory": false
+	},
+	"prisma": {
+		"schema": "prisma/schema.prisma"
+	}
+}

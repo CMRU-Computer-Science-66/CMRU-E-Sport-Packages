@@ -1,0 +1,4 @@
+packages:
+   - "database/**"
+   - "nextjs-server/**"
+   - "!database/client/"

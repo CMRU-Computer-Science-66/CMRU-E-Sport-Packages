@@ -1,0 +1,51 @@
+name: Deploy Packages
+on:
+   workflow_dispatch:
+   push:
+      branches:
+         - main
+      paths:
+         - "*/package.json"
+         - "!package.json"
+
+jobs:
+   deploy_package:
+      name: Publish Package
+      if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
+      runs-on: ubuntu-latest
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v4
+
+         - name: Setup PNPM
+           uses: pnpm/action-setup@v2
+           with:
+              run_install: |
+                 - args: [--frozen-lockfile --ignore-scripts]
+              version: ${{ vars.PNPM_VERSION }}
+
+         - name: Setup Node
+           uses: actions/setup-node@v4
+           with:
+              node-version: ${{ vars.NODE_VERSION }}
+              cache: pnpm
+
+         - name: Setup Configuration
+           run: |
+              pnpm config set 'always-auth' "true"
+
+         - name: Deploy to NPM Packages
+           run: |
+              pnpm config set '//registry.npmjs.org/:_authToken' "${AUTH_TOKEN}"
+              pnpm run publish:npm
+              pnpm config delete '//registry.npmjs.org/:_authToken'
+           env:
+              AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+         - name: Deploy to Github Packages
+           run: |
+              pnpm config set '//npm.pkg.github.com/:_authToken' "${AUTH_TOKEN}"
+              pnpm run publish:github
+              pnpm config delete '//npm.pkg.github.com/:_authToken'
+           env:
+              AUTH_TOKEN: ${{ secrets.GH_TOKEN }}

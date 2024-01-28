@@ -1,0 +1,29 @@
+{
+	"[typescript]": {
+		"editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+	},
+	"debug.console.closeOnEnd": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "always",
+		"source.organizeImports": "never"
+	},
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"eslint.format.enable": true,
+	"files.exclude": {
+		"**/cjs/": true,
+		"**/dist/": true,
+		"**/esm/": true,
+		"**/node_modules/": true,
+		"**/tsconfig*.tsbuildinfo/": true
+	},
+	"json.schemas": [
+		{
+			"fileMatch": ["package.json", "tsup.config.json"],
+			"url": "https://cdn.jsdelivr.net/npm/tsup/schema.json"
+		}
+	],
+	"npm.packageManager": "pnpm",
+	"npm.runSilent": true,
+	"typescript.suggest.autoImports": true
+}
