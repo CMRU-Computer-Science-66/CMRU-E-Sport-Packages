@@ -1,6 +1,6 @@
 {
 	"name": "cmru-e-sport-packages",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"license": "apache-2.0",
 	"author": "Faelayis <48393914+Faelayis@users.noreply.github.com>",
 	"type": "module",
@@ -20,8 +20,8 @@
 	},
 	"devDependencies": {
 		"@types/node": "20.11.10",
-		"@typescript-eslint/eslint-plugin": "6.19.1",
-		"@typescript-eslint/parser": "6.19.1",
+		"@typescript-eslint/eslint-plugin": "6.20.0",
+		"@typescript-eslint/parser": "6.20.0",
 		"del": "7.1.0",
 		"del-cli": "5.1.0",
 		"dotenv-cli": "7.3.0",
