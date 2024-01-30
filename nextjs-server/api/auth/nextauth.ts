@@ -1,5 +1,6 @@
 // import type { NextApiRequest, NextApiResponse } from "next";
 import type { User } from "@cmru-comsci-66/e-sport-database";
+import { OAuth2Scopes as DiscordOAuth2Scopes } from "discord-api-types";
 import { NextAuthOptions } from "next-auth";
 import { Adapter } from "next-auth/adapters";
 import DiscordProvider from "next-auth/providers/discord";
@@ -41,6 +42,7 @@ export function nextAuthOptions(
 			DiscordProvider({
 				clientId: environment.DiscordProvider.clientId || process.env.DISCORD_CLIENT_ID,
 				clientSecret: environment.DiscordProvider.clientSecret || process.env.DISCORD_CLIENT_SECRET,
+				authorization: { params: { scope: [DiscordOAuth2Scopes.Email, DiscordOAuth2Scopes.Identify, DiscordOAuth2Scopes.Guilds, DiscordOAuth2Scopes.GuildsJoin].join(" ") } },
 			}),
 			GitHubProvider({
 				clientId: environment.GitHubProvider.GITHUB_ID || process.env.GITHUB_ID,
