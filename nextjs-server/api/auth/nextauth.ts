@@ -2,6 +2,7 @@
 import type { User } from "@cmru-comsci-66/e-sport-database";
 import { NextAuthOptions } from "next-auth";
 import { Adapter } from "next-auth/adapters";
+import DiscordProvider from "next-auth/providers/discord";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
 
@@ -16,6 +17,10 @@ import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
  *       NextAuth: {
  *          SECRET: process.env.NEXTAUTH_SECRET,
  *       },
+ *       DiscordProvider: {
+ *          clientId: process.env.DISCORD_CLIENT_ID,
+ *          clientSecret: process.env.DISCORD_CLIENT_SECRET
+ *       },
  *       GitHubProvider: {
  *          clientId: process.env.GITHUB_ID,
  *          clientSecret: process.env.GITHUB_SECRET
@@ -29,10 +34,14 @@ import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
  */
 export function nextAuthOptions(
 	adapter: Adapter,
-	environment: { GitHubProvider?: { GITHUB_ID; GITHUB_SECRET }; GoogleProvider: { clientId; clientSecret }; NextAuth: { SECRET } },
+	environment: { DiscordProvider?: { clientId; clientSecret }; GitHubProvider?: { GITHUB_ID; GITHUB_SECRET }; GoogleProvider: { clientId; clientSecret }; NextAuth: { SECRET } },
 ): NextAuthOptions {
 	return {
 		providers: [
+			DiscordProvider({
+				clientId: environment.DiscordProvider.clientId || process.env.DISCORD_CLIENT_ID,
+				clientSecret: environment.DiscordProvider.clientSecret || process.env.DISCORD_CLIENT_SECRET,
+			}),
 			GitHubProvider({
 				clientId: environment.GitHubProvider.GITHUB_ID || process.env.GITHUB_ID,
 				clientSecret: environment.GitHubProvider.GITHUB_SECRET || process.env.GITHUB_SECRET,
