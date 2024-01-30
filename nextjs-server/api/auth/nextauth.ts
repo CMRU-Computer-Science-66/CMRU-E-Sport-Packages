@@ -1,6 +1,6 @@
 // import type { NextApiRequest, NextApiResponse } from "next";
 import type { User } from "@cmru-comsci-66/e-sport-database";
-import { OAuth2Scopes as DiscordOAuth2Scopes } from "discord-api-types";
+import { OAuth2Scopes as DiscordOAuth2Scopes } from "discord-api-types/v10";
 import { NextAuthOptions } from "next-auth";
 import { Adapter } from "next-auth/adapters";
 import DiscordProvider from "next-auth/providers/discord";
