@@ -69,6 +69,18 @@ export function nextAuthOptions(
 			}),
 		],
 		adapter,
+		callbacks: {
+			async session({ session, user }) {
+				session = {
+					...session,
+					user: {
+						...user,
+						...session.user,
+					},
+				};
+				return session;
+			},
+		},
 		secret: process.env.NEXTAUTH_SECRET || environment.NextAuth.SECRET,
 	};
 }
