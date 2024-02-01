@@ -16,15 +16,15 @@ import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
  * ```
  * nextAuthOptions(PrismaAdapter(prisma), {
  *       NextAuth: {
- *          SECRET: process.env.NEXTAUTH_SECRET,
+ *          Secret: process.env.NEXTAUTH_SECRET,
  *       },
  *       DiscordProvider: {
  *          clientId: process.env.DISCORD_CLIENT_ID,
  *          clientSecret: process.env.DISCORD_CLIENT_SECRET
  *       },
  *       GitHubProvider: {
- *          clientId: process.env.GITHUB_ID,
- *          clientSecret: process.env.GITHUB_SECRET
+ *          clientId: process.env.GITHUB_CLIENT_ID,
+ *          clientSecret: process.env.GITHUB_CLIENT_SECRET
  *       },
  *       GoogleProvider: {
  *          clientId: process.env.GOOGLE_CLIENT_ID,
@@ -35,7 +35,7 @@ import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
  */
 export function nextAuthOptions(
 	adapter: Adapter,
-	environment: { DiscordProvider?: { clientId; clientSecret }; GitHubProvider?: { GITHUB_ID; GITHUB_SECRET }; GoogleProvider: { clientId; clientSecret }; NextAuth: { SECRET } },
+	environment: { DiscordProvider?: { clientId; clientSecret }; GitHubProvider?: { clientId; clientSecret }; GoogleProvider: { clientId; clientSecret }; NextAuth: { Secret } },
 ): NextAuthOptions {
 	return {
 		providers: [
@@ -45,8 +45,8 @@ export function nextAuthOptions(
 				authorization: { params: { scope: [DiscordOAuth2Scopes.Email, DiscordOAuth2Scopes.Identify, DiscordOAuth2Scopes.Guilds, DiscordOAuth2Scopes.GuildsJoin].join(" ") } },
 			}),
 			GitHubProvider({
-				clientId: environment.GitHubProvider.GITHUB_ID || process.env.GITHUB_ID,
-				clientSecret: environment.GitHubProvider.GITHUB_SECRET || process.env.GITHUB_SECRET,
+				clientId: environment.GitHubProvider.clientId || process.env.GITHUB_CLIENT_ID,
+				clientSecret: environment.GitHubProvider.clientSecret || process.env.GITHUB_CLIENT_SECRET,
 			}),
 			GoogleProvider({
 				async profile(profile: GoogleProfile) {
@@ -81,6 +81,6 @@ export function nextAuthOptions(
 				return session;
 			},
 		},
-		secret: process.env.NEXTAUTH_SECRET || environment.NextAuth.SECRET,
+		secret: process.env.NEXTAUTH_SECRET || environment.NextAuth.Secret,
 	};
 }
