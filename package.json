@@ -35,7 +35,7 @@
 		"eslint-plugin-unicorn": "50.0.1",
 		"fast-glob": "3.3.2",
 		"open-cli": "8.0.0",
-		"prettier": "3.2.4",
+		"prettier": "3.2.5",
 		"prettier-plugin-sort-json": "3.1.0",
 		"tslib": "2.6.2",
 		"tsm": "2.3.0",
