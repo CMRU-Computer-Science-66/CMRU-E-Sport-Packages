@@ -49,6 +49,7 @@ model User {
    image         String?
    accounts      Account[]
    sessions      Session[]
+   password      String?   @db.Text
 
    updateAt   DateTime @updatedAt
    created_at DateTime @default(now())
