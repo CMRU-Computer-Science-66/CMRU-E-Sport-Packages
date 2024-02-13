@@ -14,6 +14,9 @@ jobs:
       steps:
          - name: Checkout
            uses: actions/checkout@v4
+           with:
+              token: ${{ secrets.GH_TOKEN_SUBMODULES }}
+              submodules: true
 
          - name: Detect PKG Version and Create tag
            shell: bash

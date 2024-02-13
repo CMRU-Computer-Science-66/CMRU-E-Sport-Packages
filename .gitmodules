@@ -1,0 +1,3 @@
+[submodule "database/prisma"]
+	path = database/prisma
+	url = https://github.com/CMRU-Computer-Science-66/Prisma.CMRU-E-SPORT
