@@ -20,6 +20,7 @@
 		"build:types": "tsc -b ./tsconfig.types.json",
 		"clean": "del-cli client dist esm .turbo *.tsbuildinfo",
 		"dev": "dotenv -e ../.env -- prisma studio",
+		"dev:tsc": "tsc --build -w",
 		"generate": "dotenv -e ../.env -- prisma generate",
 		"postinstall": "pnpm run generate && tsup && pnpm run build:types",
 		"lint": "eslint .",

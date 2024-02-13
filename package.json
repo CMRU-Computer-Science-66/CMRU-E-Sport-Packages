@@ -8,7 +8,7 @@
 		"build": "pnpm --filter=* postinstall",
 		"clean": "tsm ./script/clean-temp.ts && pnpm --filter=* clean",
 		"db": "pnpm --filter=./database",
-		"dev": "tsc --build ./tsconfig.project.json -w",
+		"dev": "pnpm --parallel --filter=* dev",
 		"eslint:fix": "pnpm --filter=* lint:fix",
 		"eslint:lint": "eslint .",
 		"preinstall": "npx only-allow pnpm",

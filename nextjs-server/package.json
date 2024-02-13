@@ -17,8 +17,8 @@
 	"scripts": {
 		"build:esm": "tsc -b ./tsconfig.json",
 		"clean": "del-cli dist esm .turbo *.tsbuildinfo",
-		"dev": "tsc --build -w",
-		"dev:debug": "tsc --build -w",
+		"dev": "tsup --watch",
+		"dev:tsc": "tsc --build -w",
 		"postinstall": "tsup",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
