@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/no-null */
-import type { PrismaClient, User } from "@cmru-comsci-66/e-sport-database";
+import type { PrismaClient, RoleType, User } from "@cmru-comsci-66/e-sport-database";
 import bcrypt from "bcrypt";
 import { OAuth2Scopes as DiscordOAuth2Scopes } from "discord-api-types/v10";
 import { NextAuthOptions } from "next-auth";
@@ -139,6 +139,7 @@ export function nextAuthOptions(
 					const user: User = {
 						id: profile.sub,
 						name: profile.name,
+						role: "unknown",
 						username: undefined,
 						password: undefined,
 						emailVerified: undefined,
@@ -147,6 +148,10 @@ export function nextAuthOptions(
 						created_at: new Date(),
 						updateAt: new Date(),
 					};
+
+					if (profile.hd === "g.cmru.ac.th") {
+						user.role = "user" as RoleType;
+					}
 
 					return {
 						...user,
