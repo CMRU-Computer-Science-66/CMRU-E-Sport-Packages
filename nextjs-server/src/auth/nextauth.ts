@@ -1,0 +1,183 @@
+/* eslint-disable unicorn/no-null */
+import type { PrismaClient, User } from "@cmru-comsci-66/e-sport-database";
+import bcrypt from "bcrypt";
+import { OAuth2Scopes as DiscordOAuth2Scopes } from "discord-api-types/v10";
+import { NextAuthOptions } from "next-auth";
+import { Adapter } from "next-auth/adapters";
+import CredentialsProvider from "next-auth/providers/credentials";
+import DiscordProvider from "next-auth/providers/discord";
+import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
+
+import isValidUsername from "../validation/username";
+
+/**
+ * Generates the NextAuth options object based on the provided adapter and environment configuration.
+ * @param adapter - The adapter to be used for NextAuth.
+ * @param environment - The environment configuration containing provider and secret information.
+ * @returns The NextAuth options object.
+ * @example
+ * ```
+ * nextAuthOptions(database ,PrismaAdapter(prisma), {
+ *       NextAuth: {
+ *          Secret: process.env.NEXTAUTH_SECRET,
+ *       },
+ *       DiscordProvider: {
+ *          clientId: process.env.DISCORD_CLIENT_ID,
+ *          clientSecret: process.env.DISCORD_CLIENT_SECRET
+ *       },
+ *       GitHubProvider: {
+ *          clientId: process.env.GITHUB_CLIENT_ID,
+ *          clientSecret: process.env.GITHUB_CLIENT_SECRET
+ *       },
+ *       GoogleProvider: {
+ *          clientId: process.env.GOOGLE_CLIENT_ID,
+ *          clientSecret: process.env.GOOGLE_CLIENT_SECRET
+ *       }
+ *    }
+ * ```
+ */
+export function nextAuthOptions(
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	database: PrismaClient,
+	adapter: Adapter,
+	environment: { DiscordProvider?: { clientId; clientSecret }; GitHubProvider?: { clientId; clientSecret }; GoogleProvider: { clientId; clientSecret }; NextAuth: { Secret } },
+): NextAuthOptions {
+	return {
+		providers: [
+			CredentialsProvider({
+				name: "Username",
+				id: "login-username",
+				credentials: {
+					username: { label: "Username", type: "text" },
+					password: { label: "Password", type: "password" },
+				},
+				authorize: async (credentials) => {
+					try {
+						if (!credentials.username || !credentials.password) {
+							throw new Error("Please fill in the information completely.");
+						}
+						isValidUsername(credentials.username);
+
+						const user = await database.user.findUnique({
+							where: {
+								username: credentials.username,
+							},
+						});
+
+						if (!user) {
+							throw new Error("User not found");
+						}
+
+						const passwordsMatch = await bcrypt.compare(credentials.password, user?.password);
+
+						if (!passwordsMatch) {
+							throw new Error("Password or Username is not correct");
+						}
+
+						return user;
+					} catch (error) {
+						throw new Error(error);
+					}
+				},
+			}),
+			CredentialsProvider({
+				id: "register-username",
+				name: "Register",
+				credentials: {
+					username: { label: "Username", type: "text" },
+					password: { label: "Password", type: "password" },
+					confirmPassword: { label: "Confirm Password", type: "password" },
+				},
+				authorize: async (credentials) => {
+					try {
+						if (!credentials.username || !credentials.password || !credentials.confirmPassword) {
+							throw new Error("Please fill in the information completely.");
+						}
+
+						isValidUsername(credentials.username);
+
+						const hashPassword = await bcrypt.hash(credentials.password, 10);
+						const existingUser = await database.user.findUnique({
+							where: {
+								username: credentials.username,
+							},
+						});
+
+						if (credentials.password !== credentials.confirmPassword) {
+							throw new Error("Confirm Password does not match");
+						}
+
+						if (existingUser) {
+							throw new Error("Username already exists");
+						}
+
+						const user = await database.user.create({
+							data: {
+								username: credentials.username,
+								password: hashPassword,
+							},
+						});
+
+						return user ? Promise.resolve(user) : Promise.resolve(null);
+					} catch (error) {
+						throw new Error(error);
+					}
+				},
+			}),
+			DiscordProvider({
+				clientId: environment.DiscordProvider.clientId || process.env.DISCORD_CLIENT_ID,
+				clientSecret: environment.DiscordProvider.clientSecret || process.env.DISCORD_CLIENT_SECRET,
+				authorization: { params: { scope: [DiscordOAuth2Scopes.Email, DiscordOAuth2Scopes.Identify, DiscordOAuth2Scopes.Guilds, DiscordOAuth2Scopes.GuildsJoin].join(" ") } },
+			}),
+			GitHubProvider({
+				clientId: environment.GitHubProvider.clientId || process.env.GITHUB_CLIENT_ID,
+				clientSecret: environment.GitHubProvider.clientSecret || process.env.GITHUB_CLIENT_SECRET,
+			}),
+			GoogleProvider({
+				async profile(profile: GoogleProfile) {
+					const user: User = {
+						id: profile.sub,
+						name: profile.name,
+						username: undefined,
+						password: undefined,
+						emailVerified: undefined,
+						image: profile.picture,
+						email: profile.email,
+						created_at: new Date(),
+						updateAt: new Date(),
+					};
+
+					return {
+						...user,
+					};
+				},
+				httpOptions: {
+					timeout: 10_000, // 10 Seconds,
+				},
+				clientId: environment.GoogleProvider.clientId || process.env.GOOGLE_CLIENT_ID,
+				clientSecret: environment.GoogleProvider.clientSecret || process.env.GOOGLE_CLIENT_SECRET,
+			}),
+		],
+		session: {
+			strategy: "jwt",
+		},
+		jwt: {
+			secret: process.env.NEXTAUTH_SECRET || environment.NextAuth.Secret,
+		},
+		adapter,
+		callbacks: {
+			async session({ session, user }) {
+				session = {
+					...session,
+					user: {
+						...user,
+						...session.user,
+					},
+				};
+				return session;
+			},
+		},
+		secret: process.env.NEXTAUTH_SECRET || environment.NextAuth.Secret,
+	};
+}
