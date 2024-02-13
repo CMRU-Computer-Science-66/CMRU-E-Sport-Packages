@@ -1,8 +1,11 @@
+/* eslint-disable unicorn/no-null */
 // import type { NextApiRequest, NextApiResponse } from "next";
-import type { User } from "@cmru-comsci-66/e-sport-database";
+import type { PrismaClient, User } from "@cmru-comsci-66/e-sport-database";
+import bcrypt from "bcrypt";
 import { OAuth2Scopes as DiscordOAuth2Scopes } from "discord-api-types/v10";
 import { NextAuthOptions } from "next-auth";
 import { Adapter } from "next-auth/adapters";
+import CredentialsProvider from "next-auth/providers/credentials";
 import DiscordProvider from "next-auth/providers/discord";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
@@ -14,7 +17,7 @@ import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
  * @returns The NextAuth options object.
  * @example
  * ```
- * nextAuthOptions(PrismaAdapter(prisma), {
+ * nextAuthOptions(database ,PrismaAdapter(prisma), {
  *       NextAuth: {
  *          Secret: process.env.NEXTAUTH_SECRET,
  *       },
@@ -34,11 +37,70 @@ import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
  * ```
  */
 export function nextAuthOptions(
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	database: PrismaClient | any,
 	adapter: Adapter,
 	environment: { DiscordProvider?: { clientId; clientSecret }; GitHubProvider?: { clientId; clientSecret }; GoogleProvider: { clientId; clientSecret }; NextAuth: { Secret } },
 ): NextAuthOptions {
 	return {
 		providers: [
+			CredentialsProvider({
+				name: "Username",
+				id: "login-username",
+				credentials: {
+					username: { label: "Username", type: "text" },
+					password: { label: "Password", type: "password" },
+				},
+				authorize: async (credentials) => {
+					try {
+						const user = await database.user.findUnique({
+							where: {
+								name: credentials.username,
+							},
+						});
+
+						const passwordsMatch = await bcrypt.compare(credentials.password, user.password);
+
+						if (!passwordsMatch) {
+							throw new Error("Password or Username is not correct");
+						}
+
+						return user;
+					} catch (error) {
+						throw new Error(error);
+					}
+				},
+			}),
+			CredentialsProvider({
+				id: "register-username",
+				name: "Register",
+				credentials: {
+					username: { label: "Username", type: "text" },
+					password: { label: "Password", type: "password" },
+				},
+				authorize: async (credentials) => {
+					const hashPassword = await bcrypt.hash(credentials.password, 10);
+
+					const existingUser = await database.user.findUnique({
+						where: {
+							name: credentials.username,
+						},
+					});
+
+					if (existingUser) {
+						return null;
+					}
+
+					const user = await database.user.create({
+						data: {
+							name: credentials.username,
+							password: hashPassword,
+						},
+					});
+
+					return user ? Promise.resolve(user) : Promise.resolve(null);
+				},
+			}),
 			DiscordProvider({
 				clientId: environment.DiscordProvider.clientId || process.env.DISCORD_CLIENT_ID,
 				clientSecret: environment.DiscordProvider.clientSecret || process.env.DISCORD_CLIENT_SECRET,
@@ -53,6 +115,7 @@ export function nextAuthOptions(
 					const user: User = {
 						id: profile.sub,
 						name: profile.name,
+						password: undefined,
 						emailVerified: undefined,
 						image: profile.picture,
 						email: profile.email,
@@ -68,6 +131,12 @@ export function nextAuthOptions(
 				clientSecret: environment.GoogleProvider.clientSecret || process.env.GOOGLE_CLIENT_SECRET,
 			}),
 		],
+		session: {
+			strategy: "jwt",
+		},
+		jwt: {
+			secret: process.env.NEXTAUTH_SECRET || environment.NextAuth.Secret,
+		},
 		adapter,
 		callbacks: {
 			async session({ session, user }) {
