@@ -79,26 +79,29 @@ export function nextAuthOptions(
 					password: { label: "Password", type: "password" },
 				},
 				authorize: async (credentials) => {
-					const hashPassword = await bcrypt.hash(credentials.password, 10);
+					try {
+						const hashPassword = await bcrypt.hash(credentials.password, 10);
+						const existingUser = await database.user.findUnique({
+							where: {
+								name: credentials.username,
+							},
+						});
 
-					const existingUser = await database.user.findUnique({
-						where: {
-							name: credentials.username,
-						},
-					});
+						if (existingUser) {
+							throw new Error("Username already exists");
+						}
 
-					if (existingUser) {
-						return null;
+						const user = await database.user.create({
+							data: {
+								name: credentials.username,
+								password: hashPassword,
+							},
+						});
+
+						return user ? Promise.resolve(user) : Promise.resolve(null);
+					} catch (error) {
+						throw new Error(error);
 					}
-
-					const user = await database.user.create({
-						data: {
-							name: credentials.username,
-							password: hashPassword,
-						},
-					});
-
-					return user ? Promise.resolve(user) : Promise.resolve(null);
 				},
 			}),
 			DiscordProvider({
