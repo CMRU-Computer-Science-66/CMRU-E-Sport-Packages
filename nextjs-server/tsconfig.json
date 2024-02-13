@@ -16,6 +16,7 @@
 		"noErrorTruncation": true,
 		"outDir": "./esm",
 		"removeComments": true,
+		"skipLibCheck": true,
 		"sourceMap": true,
 		"target": "ESNext",
 		"typeRoots": ["node_modules/@types"],
