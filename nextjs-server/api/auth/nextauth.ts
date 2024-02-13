@@ -38,7 +38,7 @@ import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
  */
 export function nextAuthOptions(
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	database: PrismaClient | any,
+	database: PrismaClient,
 	adapter: Adapter,
 	environment: { DiscordProvider?: { clientId; clientSecret }; GitHubProvider?: { clientId; clientSecret }; GoogleProvider: { clientId; clientSecret }; NextAuth: { Secret } },
 ): NextAuthOptions {
@@ -83,7 +83,7 @@ export function nextAuthOptions(
 						const hashPassword = await bcrypt.hash(credentials.password, 10);
 						const existingUser = await database.user.findUnique({
 							where: {
-								name: credentials.username,
+								username: credentials.username,
 							},
 						});
 
@@ -93,7 +93,7 @@ export function nextAuthOptions(
 
 						const user = await database.user.create({
 							data: {
-								name: credentials.username,
+								username: credentials.username,
 								password: hashPassword,
 							},
 						});
@@ -118,6 +118,7 @@ export function nextAuthOptions(
 					const user: User = {
 						id: profile.sub,
 						name: profile.name,
+						username: undefined,
 						password: undefined,
 						emailVerified: undefined,
 						image: profile.picture,
