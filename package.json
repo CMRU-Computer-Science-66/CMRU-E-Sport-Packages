@@ -1,6 +1,6 @@
 {
 	"name": "cmru-e-sport-packages",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"license": "apache-2.0",
 	"author": "Faelayis <48393914+Faelayis@users.noreply.github.com>",
 	"type": "module",
@@ -9,12 +9,12 @@
 		"clean": "tsm ./script/clean-temp.ts && pnpm --filter=* clean",
 		"db": "pnpm --filter=./database",
 		"dev": "pnpm --parallel --filter=* dev",
-		"eslint:fix": "pnpm --filter=* lint:fix",
-		"eslint:lint": "eslint .",
+		"eslint:fix": "pnpm --parallel --filter=* lint:fix",
+		"eslint:lint": "pnpm --parallel --filter=* lint",
 		"preinstall": "npx only-allow pnpm",
 		"pkg:update": "pnpm up --latest --recursive --interactive",
-		"prettier": "prettier --write . --ignore-unknown",
-		"prettier:package-json": "pnpx prettier-package-json --write **/package.json --use-tabs 3",
+		"prettier": "prettier --write . --ignore-unknown && pnpm run prettier:pkg",
+		"prettier:pkg": "prettier-package-json --write **/package.json --use-tabs 3",
 		"publish:github": "tsm script/update-package.ts github && pnpm --filter=@cmru-computer-science-66/* publish -r --access=public --registry=https://npm.pkg.github.com/",
 		"publish:npm": "tsm script/update-package.ts npm && pnpm --filter=@cmru-comsci-66/* publish -r --access=public --registry=https://registry.npmjs.org/"
 	},
@@ -36,6 +36,7 @@
 		"fast-glob": "3.3.2",
 		"open-cli": "8.0.0",
 		"prettier": "3.2.5",
+		"prettier-package-json": "2.8.0",
 		"prettier-plugin-sort-json": "3.1.0",
 		"tslib": "2.6.2",
 		"tsm": "2.3.0",
@@ -44,38 +45,31 @@
 	},
 	"eslintConfig": {
 		"env": {
-			"node": true,
-			"es2024": true
+			"es2024": true,
+			"node": true
 		},
 		"parserOptions": {
 			"ecmaVersion": "latest",
 			"sourceType": "module"
 		},
-		"extends": [
-			"eslint:recommended",
-			"prettier"
-		],
 		"plugins": [
 			"import",
 			"simple-import-sort",
 			"sort-destructure-keys",
 			"prettier"
 		],
-		"ignorePatterns": [
-			"node_modules",
-			"database/client",
-			"dist",
-			"esm",
-			"cjs"
+		"extends": [
+			"eslint:recommended",
+			"prettier"
 		],
 		"rules": {
 			"import/first": "warn",
 			"import/newline-after-import": "warn",
 			"import/no-duplicates": "warn",
-			"simple-import-sort/imports": "warn",
+			"prettier/prettier": "warn",
 			"simple-import-sort/exports": "warn",
-			"sort-destructure-keys/sort-destructure-keys": "warn",
-			"prettier/prettier": "warn"
+			"simple-import-sort/imports": "warn",
+			"sort-destructure-keys/sort-destructure-keys": "warn"
 		},
 		"overrides": [
 			{
@@ -99,6 +93,13 @@
 					"typescript-sort-keys/string-enum": "warn"
 				}
 			}
+		],
+		"ignorePatterns": [
+			"node_modules",
+			"database/client",
+			"dist",
+			"esm",
+			"cjs"
 		]
 	},
 	"packageManager": "pnpm@8.15.2",
@@ -113,12 +114,13 @@
 		"useTabs": true,
 		"overrides": [
 			{
+				"excludeFiles": "package.json",
 				"files": "*.json",
 				"options": {
+					"jsonRecursiveSort": true,
 					"plugins": [
 						"prettier-plugin-sort-json"
-					],
-					"jsonRecursiveSort": true
+					]
 				}
 			}
 		]
