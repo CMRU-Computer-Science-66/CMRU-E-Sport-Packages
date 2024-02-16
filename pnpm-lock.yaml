@@ -113,8 +113,8 @@ importers:
         version: 6.9.8
     devDependencies:
       '@cmru-comsci-66/e-sport-database':
-        specifier: 1.4.0
-        version: 1.4.0
+        specifier: 1.4.1
+        version: link:../database
       '@swc/core':
         specifier: 1.4.1
         version: 1.4.1
@@ -226,14 +226,6 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.1
-
-  /@cmru-comsci-66/e-sport-database@1.4.0:
-    resolution: {integrity: sha512-49KrnAziHXwiTxw2GkjEzU3xAXoQWDgmCExjo4+k5LQbmKNmZxqfQDYXHnWGTSb4ttcz1eaHL2QAoBBsExysTg==}
-    requiresBuild: true
-    dependencies:
-      '@prisma/client': 5.9.1(prisma@5.9.1)
-      prisma: 5.9.1
-    dev: true
 
   /@esbuild/aix-ppc64@0.19.12:
     resolution: {integrity: sha512-bmoCYyWdEL3wDQIVbcyzRyeKLgk2WtWLTWz1ZIAZF/EGbNOwSA6ew3PftJ1PqMiOOGu0OyFMzG53L0zqIpPeNA==}
