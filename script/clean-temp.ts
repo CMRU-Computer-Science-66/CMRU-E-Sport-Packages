@@ -2,7 +2,7 @@
 import { deleteAsync } from "del";
 
 const ignore = ["node_modules"],
-	patterns = ["**/.next", "**/cjs", "**/esm", "**/dist", "**.tsbuildinfo"];
+	patterns = ["**/.next", "**/cjs", "**/.tsup", "**/esm", "**/dist", "**.tsbuildinfo"];
 
 const deletedItems = await deleteAsync(patterns, { ignore });
 

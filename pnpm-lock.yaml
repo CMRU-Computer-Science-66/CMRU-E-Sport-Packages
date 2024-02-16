@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@types/node':
-        specifier: 20.11.17
-        version: 20.11.17
+        specifier: 20.11.19
+        version: 20.11.19
       '@typescript-eslint/eslint-plugin':
         specifier: 7.0.1
         version: 7.0.1(@typescript-eslint/parser@7.0.1)(eslint@8.56.0)(typescript@5.3.3)
@@ -88,8 +88,8 @@ importers:
         version: 5.9.1
     devDependencies:
       '@types/node':
-        specifier: 20.11.17
-        version: 20.11.17
+        specifier: 20.11.19
+        version: 20.11.19
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -114,7 +114,7 @@ importers:
     devDependencies:
       '@cmru-comsci-66/e-sport-database':
         specifier: 1.4.1
-        version: link:../database
+        version: 1.4.1(@prisma/client@5.9.1)(prisma@5.9.1)
       '@swc/core':
         specifier: 1.4.1
         version: 1.4.1
@@ -226,6 +226,17 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.1
+
+  /@cmru-comsci-66/e-sport-database@1.4.1(@prisma/client@5.9.1)(prisma@5.9.1):
+    resolution: {integrity: sha512-YKKRBirMm91+c6EJ3/7OPK0x+4xim3Kz4nXQGJxZ9HVRI1c4dJMoMH9M+ZK+rmUYb/y1ECyqtq7VFCZHjn+rog==}
+    requiresBuild: true
+    peerDependencies:
+      '@prisma/client': 5.9.1
+      prisma: 5.9.1
+    dependencies:
+      '@prisma/client': 5.9.1(prisma@5.9.1)
+      prisma: 5.9.1
+    dev: true
 
   /@esbuild/aix-ppc64@0.19.12:
     resolution: {integrity: sha512-bmoCYyWdEL3wDQIVbcyzRyeKLgk2WtWLTWz1ZIAZF/EGbNOwSA6ew3PftJ1PqMiOOGu0OyFMzG53L0zqIpPeNA==}
@@ -970,7 +981,7 @@ packages:
   /@types/bcrypt@5.0.2:
     resolution: {integrity: sha512-6atioO8Y75fNcbmj0G7UjI9lXN2pQ/IGJ2FWT4a/btd0Lk9lQalHLKhkgKVZ3r+spnmWUKfbMi1GEe9wyHQfNQ==}
     dependencies:
-      '@types/node': 20.11.17
+      '@types/node': 20.11.19
     dev: true
 
   /@types/estree@1.0.5:
@@ -995,10 +1006,16 @@ packages:
       undici-types: 5.26.5
     dev: true
 
+  /@types/node@20.11.19:
+    resolution: {integrity: sha512-7xMnVEcZFu0DikYjWOlRq7NTPETrm7teqUT2WkQjrTIkEgUyyGdWsj/Zg8bEJt5TNklzbPD1X3fqfsHw3SpapQ==}
+    dependencies:
+      undici-types: 5.26.5
+    dev: true
+
   /@types/nodemailer@6.4.14:
     resolution: {integrity: sha512-fUWthHO9k9DSdPCSPRqcu6TWhYyxTBg382vlNIttSe9M7XfsT06y0f24KHXtbnijPGGRIcVvdKHTNikOI6qiHA==}
     dependencies:
-      '@types/node': 20.11.17
+      '@types/node': 20.11.19
     dev: true
 
   /@types/normalize-package-data@2.4.4:
