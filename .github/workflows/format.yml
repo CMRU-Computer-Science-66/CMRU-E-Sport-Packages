@@ -36,6 +36,9 @@ jobs:
          - name: Run Prettier
            run: pnpm run prettier
 
+         - name: Run Prettier package.json
+           run: pnpm run prettier:pkg
+
          - name: Automatically Commit Changed
            uses: stefanzweifel/git-auto-commit-action@v5
            with:

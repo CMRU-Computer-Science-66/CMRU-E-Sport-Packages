@@ -1,6 +1,6 @@
 {
 	"name": "cmru-e-sport-packages",
-	"version": "1.0.8",
+	"version": "1.0.9",
 	"license": "apache-2.0",
 	"author": "Faelayis <48393914+Faelayis@users.noreply.github.com>",
 	"type": "module",
@@ -13,7 +13,7 @@
 		"eslint:lint": "pnpm --parallel --filter=* lint",
 		"preinstall": "npx only-allow pnpm",
 		"pkg:update": "pnpm up --latest --recursive --interactive",
-		"prettier": "prettier --write . --ignore-unknown && pnpm run prettier:pkg",
+		"prettier": "prettier --write . --ignore-unknown",
 		"prettier:pkg": "prettier-package-json --write **/package.json --use-tabs 3",
 		"publish:github": "tsm script/update-package.ts github && pnpm --filter=@cmru-computer-science-66/* publish -r --access=public --registry=https://npm.pkg.github.com/",
 		"publish:npm": "tsm script/update-package.ts npm && pnpm --filter=@cmru-comsci-66/* publish -r --access=public --registry=https://registry.npmjs.org/"
