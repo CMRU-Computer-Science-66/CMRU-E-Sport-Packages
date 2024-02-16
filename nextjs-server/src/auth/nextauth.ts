@@ -97,12 +97,12 @@ export function nextAuthOptions(
 						const hashPassword = await bcrypt.hash(credentials.password, 10);
 						const existingUser = await database.user.findUnique({
 							where: {
-								username: credentials.username,
+								username: credentials.username.toLowerCase(),
 							},
 						});
 
 						if (existingUser) {
-							throw new Error("Username already exists");
+							throw new Error("Username is already exists");
 						}
 
 						const user = await database.user.create({
