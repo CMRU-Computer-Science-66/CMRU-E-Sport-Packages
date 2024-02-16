@@ -9,7 +9,7 @@ import DiscordProvider from "next-auth/providers/discord";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
 
-import isValidUsername from "../validation/username";
+import isValidCredentials from "../validation/credentials";
 
 /**
  * Generates the NextAuth options object based on the provided adapter and environment configuration.
@@ -54,14 +54,11 @@ export function nextAuthOptions(
 				},
 				authorize: async (credentials) => {
 					try {
-						if (!credentials.username || !credentials.password) {
-							throw new Error("Please fill in the information completely.");
-						}
-						isValidUsername(credentials.username);
+						await isValidCredentials(credentials);
 
 						const user = await database.user.findUnique({
 							where: {
-								username: credentials.username,
+								username: credentials.username.toLowerCase(),
 							},
 						});
 
@@ -73,6 +70,10 @@ export function nextAuthOptions(
 
 						if (!passwordsMatch) {
 							throw new Error("Password or Username is not correct");
+						}
+
+						if (user?.password) {
+							delete user.password;
 						}
 
 						return user;
@@ -91,11 +92,7 @@ export function nextAuthOptions(
 				},
 				authorize: async (credentials) => {
 					try {
-						if (!credentials.username || !credentials.password || !credentials.confirmPassword) {
-							throw new Error("Please fill in the information completely.");
-						}
-
-						isValidUsername(credentials.username);
+						await isValidCredentials(credentials);
 
 						const hashPassword = await bcrypt.hash(credentials.password, 10);
 						const existingUser = await database.user.findUnique({
@@ -104,20 +101,22 @@ export function nextAuthOptions(
 							},
 						});
 
-						if (credentials.password !== credentials.confirmPassword) {
-							throw new Error("Confirm Password does not match");
-						}
-
 						if (existingUser) {
 							throw new Error("Username already exists");
 						}
 
 						const user = await database.user.create({
 							data: {
-								username: credentials.username,
+								role: "viewer",
+								name: credentials.username,
+								username: credentials.username.toLowerCase(),
 								password: hashPassword,
 							},
 						});
+
+						if (user?.password) {
+							delete user.password;
+						}
 
 						return user ? Promise.resolve(user) : Promise.resolve(null);
 					} catch (error) {
@@ -172,13 +171,23 @@ export function nextAuthOptions(
 		},
 		adapter,
 		callbacks: {
-			async session({ session, user }) {
+			async session({ session, token, user }) {
+				if (token?.sub) {
+					const user = await database.user.findUnique({
+						where: {
+							id: token.sub,
+						},
+					});
+					session.user = user;
+				}
+
 				session = {
 					...session,
 					user: {
 						...user,
 						...session.user,
-					},
+						password: undefined,
+					} as User,
 				};
 				return session;
 			},
