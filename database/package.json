@@ -32,12 +32,12 @@
 	},
 	"typings": "dist/index.d.ts",
 	"dependencies": {
-		"@prisma/client": "5.9.1",
-		"prisma": "5.9.1"
+		"@prisma/client": "5.10.2",
+		"prisma": "5.10.2"
 	},
 	"peerDependencies": {
-		"@prisma/client": "5.9.1",
-		"prisma": "5.9.1"
+		"@prisma/client": "5.10.2",
+		"prisma": "5.10.2"
 	},
 	"devDependencies": {
 		"@types/node": "20.11.19",
