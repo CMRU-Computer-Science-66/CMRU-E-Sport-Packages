@@ -12,6 +12,7 @@
 		"eslint:fix": "pnpm --parallel --filter=* lint:fix",
 		"eslint:lint": "pnpm --parallel --filter=* lint",
 		"preinstall": "npx only-allow pnpm",
+		"submodule:update:": "git submodule update --rebase --remote",
 		"pkg:update": "pnpm up --latest --recursive --interactive",
 		"prettier": "prettier --write . --ignore-unknown",
 		"prettier:pkg": "prettier-package-json --write **/package.json --use-tabs 3",

@@ -113,7 +113,7 @@ importers:
         version: 6.9.8
     devDependencies:
       '@cmru-comsci-66/e-sport-database':
-        specifier: 1.4.2
+        specifier: 1.4.3
         version: link:../database
       '@swc/core':
         specifier: 1.4.2
@@ -174,8 +174,8 @@ importers:
         specifier: 1.0.7
         version: 1.0.7(@prisma/client@5.10.2)(next-auth@4.24.6)
       '@prisma/nextjs-monorepo-workaround-plugin':
-        specifier: 5.9.1
-        version: 5.9.1
+        specifier: 5.10.2
+        version: 5.10.2
       '@types/node':
         specifier: ^20
         version: 20.11.17
@@ -730,11 +730,6 @@ packages:
 
   /@prisma/nextjs-monorepo-workaround-plugin@5.10.2:
     resolution: {integrity: sha512-eZnYMgmiZfW3beqvkA+Xerubi9J//S/CSGevzbd+E48sKSjiRysKq91PWcdoENOSYZirdsAdGCx+q+sgXxqR9w==}
-    dev: false
-
-  /@prisma/nextjs-monorepo-workaround-plugin@5.9.1:
-    resolution: {integrity: sha512-eyhfdkGUtUyz8BxKocgl953KuC5WWLxL+EC2aJBUSSozh+l/COg1FjvCa4fGeNbiJPdFnBPybv5+M52jc+vV6Q==}
-    dev: true
 
   /@rollup/rollup-android-arm-eabi@4.12.0:
     resolution: {integrity: sha512-+ac02NL/2TCKRrJu2wffk1kZ+RyqxVUlbjSagNgPm94frxtr+XDL12E5Ll1enWskLrtrZ2r8L3wED1orIibV/w==}
