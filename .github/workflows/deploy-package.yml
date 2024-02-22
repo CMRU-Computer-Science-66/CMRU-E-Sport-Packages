@@ -23,8 +23,7 @@ jobs:
          - name: Setup PNPM
            uses: pnpm/action-setup@v2
            with:
-              run_install: |
-                 - args: [--no-frozen-lockfile]
+              run_install: true
               version: ${{ vars.PNPM_VERSION }}
 
          - name: Setup Node
