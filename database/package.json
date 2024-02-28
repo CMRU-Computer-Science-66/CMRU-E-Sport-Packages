@@ -1,7 +1,7 @@
 {
 	"private": false,
 	"name": "@cmru-comsci-66/e-sport-database",
-	"version": "1.4.3",
+	"version": "1.4.4",
 	"license": "apache-2.0",
 	"author": "Faelayis <48393914+Faelayis@users.noreply.github.com>",
 	"repository": {
@@ -40,7 +40,7 @@
 		"prisma": "5.10.2"
 	},
 	"devDependencies": {
-		"@types/node": "20.11.20",
+		"@types/node": "20.11.22",
 		"typescript": "5.3.3"
 	},
 	"publishConfig": {
