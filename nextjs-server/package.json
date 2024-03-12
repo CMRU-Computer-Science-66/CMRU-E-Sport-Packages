@@ -32,7 +32,7 @@
 		"discord-api-types": "0.37.71"
 	},
 	"peerDependencies": {
-		"@cmru-comsci-66/e-sport-database": "1.4.3",
+		"@cmru-comsci-66/e-sport-database": "1.4.4",
 		"@next-auth/prisma-adapter": "1.0.7",
 		"@prisma/nextjs-monorepo-workaround-plugin": "5.10.2",
 		"bcrypt": "^5.1.1",
