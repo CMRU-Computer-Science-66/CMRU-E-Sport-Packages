@@ -21,8 +21,8 @@
 	},
 	"devDependencies": {
 		"@types/node": "20.11.26",
-		"@typescript-eslint/eslint-plugin": "7.1.0",
-		"@typescript-eslint/parser": "7.1.0",
+		"@typescript-eslint/eslint-plugin": "7.2.0",
+		"@typescript-eslint/parser": "7.2.0",
 		"del": "7.1.0",
 		"del-cli": "5.1.0",
 		"dotenv-cli": "7.3.0",
