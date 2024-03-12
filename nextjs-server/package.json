@@ -48,7 +48,7 @@
 		"@prisma/nextjs-monorepo-workaround-plugin": "5.10.2",
 		"@swc/core": "1.4.2",
 		"@types/bcrypt": "5.0.2",
-		"@types/node": "20.11.22",
+		"@types/node": "20.11.26",
 		"@types/nodemailer": "6.4.14",
 		"@types/react": "18.2.60",
 		"@types/react-dom": "18.2.19",
