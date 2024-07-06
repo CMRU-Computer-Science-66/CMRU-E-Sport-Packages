@@ -106,8 +106,8 @@ importers:
         specifier: 5.1.1
         version: 5.1.1
       discord-api-types:
-        specifier: 0.37.77
-        version: 0.37.77
+        specifier: 0.37.92
+        version: 0.37.92
       nodemailer:
         specifier: ^6.6.5
         version: 6.9.8
@@ -1932,8 +1932,8 @@ packages:
       path-type: 4.0.0
     dev: true
 
-  /discord-api-types@0.37.77:
-    resolution: {integrity: sha512-AkEn9nZA5w/XJ8wzKzlpx3X+MToQCowKahftF1+KYnMWnuglCrVRojy1XlIWX8Frgp1v8INceGKpvDkbvMLJ4g==}
+  /discord-api-types@0.37.92:
+    resolution: {integrity: sha512-7xnedbQRLRef/O+4jKPyIFwl6YqoyihOG3OSneiRmVJMBk30ph2YuZGcHjeX1Kk/a3yQWeyCKe4RZJB3iECcxg==}
     dev: false
 
   /doctrine@2.1.0:
